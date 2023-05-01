@@ -12,7 +12,7 @@ query {
 # Get the number of PRs
 pr_count=$(gh api graphql -f query="
 query {
-    repository(owner: \"${OWNER}\", name: \"${NAME}\") {
+    repository(owner: \"${OWNER}\", name: \"${REPOSITORY}\") {
         pullRequests(states: OPEN) {
             totalCount
         }
