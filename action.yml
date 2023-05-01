@@ -8,13 +8,15 @@ inputs:
 
   owner:
     description: 'Name of the owner or organization'
-    required: true
-    default: 'bootcamp-org' # CHANGE TO: ${{ github.event.organization.login  }}
+    default: 'bootcamp-org' # CHANGE THIS
 
   repository:
     description: 'Name of the repository'
-    required: true
-    default: 'actions-hero' # CHANGE TO: ${{ github.event.repository.name }}
+    default: 'actions-hero' # CHANGE THIS
+
+  token:
+    description: 'Token required to use GitHub CLI in a GitHub Actions workflow'
+    default: ${{ github.token }}
 
 outputs:
   random-number:
@@ -26,10 +28,11 @@ runs:
   steps:
     - run: echo Hello ${{ inputs.who-to-greet }}.
       shell: bash
-    - run: ./goodbye.sh
+    - run: goodbye.sh
       shell: bash
-    - run: ./pulls.sh
+    - run: pulls.sh
       shell: bash
       env:
         OWNER: ${{ inputs.owner }}
         REPOSITORY: ${{ inputs.repository }}
+        GH_TOKEN: ${{ inputs.token }}
