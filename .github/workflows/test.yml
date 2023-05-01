@@ -8,12 +8,9 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-    - id: foo
-      uses: mateusabelli/pr-tracker@main
-      with:
-        who-to-greet: "Mateus"
-        owner: ${{ github.event.organization.login }}
-        repository: ${{ github.event.repository.name }}
-
-    - run: echo random-number ${{ steps.foo.outputs.random-number }}
-      shell: bash
+      - uses: actions/checkout@v3
+      - uses: mateusabelli/pr-tracker@main
+        with:
+          who-to-greet: "Mateus"
+          owner: ${{ github.event.organization.login }}
+          repository: ${{ github.event.repository.name }}
