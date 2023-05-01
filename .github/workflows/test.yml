@@ -1,0 +1,18 @@
+name: "PR Tracker Test"
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - id: foo
+      uses: ./
+      with:
+        who-to-greet: "Mateus"
+        owner: ${{ github.event.organization.login  }}
+        repository: ${{ github.event.repository.name }}
+
+    - run: echo random-number ${{ steps.foo.outputs.random-number }}
+      shell: bash

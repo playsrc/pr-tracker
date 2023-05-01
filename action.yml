@@ -1,0 +1,38 @@
+name: 'PR Tracker'
+description: 'Find similar or duplicated Pull Requests'
+inputs:
+  who-to-greet:
+    description: 'Who to greet'
+    required: true
+    default: 'World'
+
+  owner:
+    description: 'Name of the owner or organization'
+    default: 'bootcamp-org' # CHANGE TO: ${{ github.event.organization.login  }}
+
+  repository:
+    description: 'Name of the repository'
+    default: 'actions-hero' # CHANGE TO: ${{ github.event.repository.name }}
+
+outputs:
+  random-number:
+    description: "Random number"
+    value: ${{ steps.random-number-generator.outputs.random-number }}
+
+runs:
+  using: "composite"
+  steps:
+    - run: echo Hello ${{ inputs.who-to-greet }}.
+      shell: bash
+    - id: random-number-generator
+      run: echo "random-number=$(echo $RANDOM)" >> $GITHUB_OUTPUT
+      shell: bash
+    - run: echo "${{ github.action_path }}" >> $GITHUB_PATH
+      shell: bash
+    - run: goodbye.sh
+      shell: bash
+    - run: pulls.sh
+      shell: bash
+      env:
+        OWNER: ${{ inputs.owner }}
+        REPOSITORY: ${{ inputs.repository }}
