@@ -26,9 +26,9 @@ runs:
   steps:
     - run: echo Hello ${{ inputs.who-to-greet }}.
       shell: bash
-    - run: goodbye.sh
+    - run: ./goodbye.sh
       shell: bash
-    - run: pulls.sh
+    - run: ./pulls.sh
       shell: bash
       env:
         OWNER: ${{ inputs.owner }}
