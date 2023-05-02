@@ -1,4 +1,5 @@
 name: 'PR Tracker'
+
 description: 'Find similar or duplicated Pull Requests'
 inputs:
   who-to-greet:
