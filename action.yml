@@ -1,38 +1,40 @@
 name: 'PR Tracker'
 description: 'Find similar or duplicated Pull Requests'
-inputs:
-  who-to-greet:
-    description: 'Who to greet'
-    required: true
-    default: 'World'
 
+inputs:
   owner:
     description: 'Name of the owner or organization'
-    default: 'bootcamp-org' # CHANGE THIS
+    default: ${{ github.repository_owner }}
 
   repository:
     description: 'Name of the repository'
-    default: 'actions-hero' # CHANGE THIS
+    default: ${{ github.event.repository.name }}
+
+  pr_number:
+    description: 'Number of the Pull Request'
+    default: ${{ github.event.number }}
 
   token:
     description: 'Token required to use GitHub CLI in a GitHub Actions workflow'
     default: ${{ github.token }}
 
-outputs:
-  random-number:
-    description: "Random number"
-    value: ${{ steps.random-number-generator.outputs.random-number }}
-
 runs:
-  using: "composite"
+  using: 'composite'
+
   steps:
-    - run: echo Hello ${{ inputs.who-to-greet }}.
-      shell: bash
-    - run: ./goodbye.sh
-      shell: bash
-    - run: ./pulls.sh
+    - run: . check_pulls.sh
       shell: bash
       env:
         OWNER: ${{ inputs.owner }}
         REPOSITORY: ${{ inputs.repository }}
+        PR_NUMBER: ${{ inputs.pr_number }}
         GH_TOKEN: ${{ inputs.token }}
+
+    - run: . check_conflicts.sh
+      shell: bash
+
+    - run: . check_hunks.sh
+      shell: bash
+
+    - run: . comment.sh
+      shell: bash
