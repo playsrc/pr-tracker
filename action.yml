@@ -38,3 +38,8 @@ runs:
 
     - run: . comment.sh
       shell: bash
+      env:
+        OWNER: ${{ inputs.owner }}
+        REPOSITORY: ${{ inputs.repository }}
+        PR_NUMBER: ${{ inputs.pr_number }}
+        GH_TOKEN: ${{ inputs.token }}

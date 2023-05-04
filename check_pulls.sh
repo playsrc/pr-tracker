@@ -87,6 +87,6 @@ if [[ "${FOUND_PR_AMOUNT}" -gt 0 ]]; then
     echo "${FOUND_PR_AMOUNT}"
     echo "${FOUND_PR_NUMBERS}"
 
-    export CHECK_PULLS_LINE=":open_file_folder: Found ${FOUND_PR_AMOUNT} contributors working on the same files"
+    export CHECK_PULLS_LINE=":ballot_box_with_check: \*\*${FOUND_PR_AMOUNT}\*\* contributor(s) found working on the same file(s)"
     export CHECK_PULLS_DETAILS="check_pulls.sh DETAILS (TODO)"
 fi
