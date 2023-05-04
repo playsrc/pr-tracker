@@ -30,11 +30,11 @@ runs:
         PR_NUMBER: ${{ inputs.pr_number }}
         GH_TOKEN: ${{ inputs.token }}
 
-    - run: . check_conflicts.sh
-      shell: bash
+    # - run: . check_conflicts.sh
+    #   shell: bash
 
-    - run: . check_hunks.sh
-      shell: bash
+    # - run: . check_hunks.sh
+    #   shell: bash
 
     - run: . comment.sh
       shell: bash
