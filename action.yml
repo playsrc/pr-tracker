@@ -26,21 +26,9 @@ runs:
       with:
         repository: 'mateusabelli/pr-tracker'
         ref: 'main'
-    - run: . check_pulls.sh
-      shell: bash
-      env:
-        OWNER: ${{ inputs.owner }}
-        REPOSITORY: ${{ inputs.repository }}
-        PR_NUMBER: ${{ inputs.pr_number }}
-        GH_TOKEN: ${{ inputs.token }}
-
-    # - run: . check_conflicts.sh
-    #   shell: bash
-
-    # - run: . check_hunks.sh
-    #   shell: bash
-
-    - run: . comment.sh
+    - run: |
+          . check_pulls.sh
+          . comment.sh
       shell: bash
       env:
         OWNER: ${{ inputs.owner }}
