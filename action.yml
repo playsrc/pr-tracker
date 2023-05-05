@@ -29,6 +29,7 @@ runs:
     - run: |
           . check_pulls.sh
           . comment.sh
+
       shell: bash
       env:
         OWNER: ${{ inputs.owner }}
