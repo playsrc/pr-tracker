@@ -10,7 +10,3 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: mateusabelli/pr-tracker@main
-        with:
-          who-to-greet: "Mateus"
-          owner: ${{ github.repository_owner}}
-          repository: ${{ github.event.repository.name }}
