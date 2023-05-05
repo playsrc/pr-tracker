@@ -46,7 +46,7 @@ echo "--- DEBUG START ---"
 echo "Remaining API calls: ${rate_limit_remaining}"
 echo "${pr_files_changed}"
 
-echo "--- DEBUG END ---"
+# echo "--- DEBUG END ---"
 
 JS_CODE="
 const pathsToSearch = [...${pr_files_changed}.files.nodes].map(file => file.path);
@@ -84,9 +84,11 @@ else
 fi
 
 if [[ "${FOUND_PR_AMOUNT}" -gt 0 ]]; then
-    echo "${FOUND_PR_AMOUNT}"
-    echo "${FOUND_PR_NUMBERS}"
+    echo "FOUND_PR_AMOUNT: ${FOUND_PR_AMOUNT}"
+    echo "FOUND_PR_NUMBERS: ${FOUND_PR_NUMBERS}"
 
-    export CHECK_PULLS_LINE=":ballot_box_with_check: \*\*${FOUND_PR_AMOUNT}\*\* contributor(s) found working on the same file(s)"
-    export CHECK_PULLS_DETAILS="check_pulls.sh DETAILS (TODO)"
+    echo "--- DEBUG END ---"
+
+    export CHECK_PULLS_LINE="| :ballot_box_with_check: | **${FOUND_PR_AMOUNT}** pull request(s) found with the same file(s) |"
+    export CHECK_PULLS_DETAILS=":ballot_box_with_check: Found other Pull Request(s) with the same file(s) being modified (TODO)"
 fi
