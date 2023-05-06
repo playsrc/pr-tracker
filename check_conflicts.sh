@@ -29,6 +29,11 @@ else
 
         echo "[DEBUG] COMPARE_BRANCH_NAME: ${COMPARE_BRANCH_NAME}"
 
+        # This is required when running the git merge, even though no commit is
+        # going to be made, git still needs an identity. (TODO: Find a better way)
+        git config user.email "pr-tracker@github.com"
+        git config user.name "PR Tracker"
+
         MERGE_DRY_RUN=$(git merge "$PR_BRANCH_NAME" --no-commit --no-ff "$COMPARE_BRANCH_NAME")
 
         # When a conflict is detected, git returns an error status, if this
