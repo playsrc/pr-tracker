@@ -3,9 +3,9 @@ CONFLICT_PR_AMOUNT=0
 
 echo "Checking Conflicts..."
 
-# When check_pulls.sh finds something it exports these two variables
-# if they are empty, do nothing, else start checking for conflicts
-if [[ -z "${FOUND_PR_AMOUNT}" && -z "${FOUND_PR_NUMBERS}" ]]
+# check_pulls.sh exports two variables FOUND_PR_NUMBERS and FOUND_PR_AMOUNT
+# if FOUND_PR_NUMBERS is empty, do nothing, else start checking for conflicts
+if [[ -z "${FOUND_PR_NUMBERS}" ]]
 then
     echo "No conflicts found!"
 else
