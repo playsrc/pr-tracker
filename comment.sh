@@ -22,6 +22,8 @@ if [ -z "${CHECK_CONFLICTS_LINE}" ]
 then
     COMPOSED_COMMENT+="| :white_check_mark: | **0** conflict(s) detected among them |\n"
 else
+    COMPOSED_DETAIL+="\n\n#### Check Conflicts\n\n"
+
     COMPOSED_COMMENT+="${CHECK_CONFLICTS_LINE}\n"
     COMPOSED_DETAIL+="${CHECK_CONFLICTS_DETAILS}\n"
 fi

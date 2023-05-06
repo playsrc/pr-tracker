@@ -7,27 +7,54 @@ echo "Checking Conflicts..."
 # if FOUND_PR_NUMBERS is empty, do nothing, else start checking for conflicts
 if [[ -z "${FOUND_PR_NUMBERS}" ]]
 then
-    echo "No conflicts found!"
+    echo "No pulls to scan for conflicts..."
 else
     # Bash doesn't exports arrays, so we have to convert it from string
     readarray -t pr_array <<<"$FOUND_PR_NUMBERS"
 
+    # Checkout the current PR and get its branch name
+    gh pr checkout "${PR_NUMBER}"
+    PR_BRANCH_NAME=$(git branch --show-current)
+
+    echo "[DEBUG] PR_BRANCH_NAME: ${PR_BRANCH_NAME}"
+
+    # Loop through the array of PR numbers to check if they conflict with the
+    # current pr by having git attempt an auto merge between the two branches.
     for pr in "${pr_array[@]}"
     do
-        echo -e "PR $pr"
+        echo "[DEBUG] Checking conflicts on PR: $pr..."
+
+        gh pr checkout "$pr"
+        COMPARE_BRANCH_NAME=$(git branch --show-current)
+
+        echo "[DEBUG] COMPARE_BRANCH_NAME: ${COMPARE_BRANCH_NAME}"
+
+        MERGE_DRY_RUN=$(git merge "$PR_BRANCH_NAME" --no-commit --no-ff "$COMPARE_BRANCH_NAME")
+
+        # When a conflict is detected, git returns an error status, if this
+        # happens then increment the conflicts amount variable and reset git.
+        if $MERGE_DRY_RUN; then
+            echo "---"
+            echo "No conflicts found!"
+            echo "---"
+        else
+            echo "---"
+            echo "Error!"
+            echo "---"
+            ((CONFLICT_PR_AMOUNT++))
+            git merge --abort
+            git reset
+        fi
     done
 fi
 
 # By default this condition is false and it won't run, unless
 # a conflict has been detected, and incremented the variable count
 if [[ "${CONFLICT_PR_AMOUNT}" -gt 0 ]]; then
-    echo "--- DEBUG START ---"
+    echo "[DEBUG] FOUND_PR_AMOUNT: ${FOUND_PR_AMOUNT}"
+    echo "[DEBUG] FOUND_PR_NUMBERS: ${FOUND_PR_NUMBERS}"
 
-    echo "FOUND_PR_AMOUNT: ${FOUND_PR_AMOUNT}"
-    echo "FOUND_PR_NUMBERS: ${FOUND_PR_NUMBERS}"
-
-    echo "--- DEBUG END ---"
     # Exports comment parts to be assembled in comment.sh
     export CHECK_CONFLICTS_LINE="| :heavy_multiplication_x: | **${CONFLICT_PR_AMOUNT}** conflict(s) detected among them |"
-    export CHECK_CONFLICTS_DETAILS="check_conflicts.sh DETAILS (TODO)"
+    export CHECK_CONFLICTS_DETAILS=":heavy_multiplication_x: Detected merge conflicts with other Pull Request(s) (TODO)"
 fi
