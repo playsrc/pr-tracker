@@ -34,14 +34,17 @@ else
         git config user.email "pr-tracker@github.com"
         git config user.name "PR Tracker"
 
-        MERGE_DRY_RUN=$(git merge "$PR_BRANCH_NAME" --no-commit --no-ff "$COMPARE_BRANCH_NAME")
+        # Dry run of git merge
+        git merge "$PR_BRANCH_NAME" --no-commit --no-ff "$COMPARE_BRANCH_NAME"
 
         # When a conflict is detected, git returns an error status, if this
         # happens then increment the conflicts amount variable and reset git.
-        if $MERGE_DRY_RUN; then
+        if [ $? -eq 0 ]; then
             echo "---"
             echo "No conflicts found!"
             echo "---"
+            git merge --abort
+            git reset
         else
             echo "---"
             echo "Error!"

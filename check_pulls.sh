@@ -48,8 +48,8 @@ pr_files_changed=$(echo "${pr_data}" | jq '.data.repository.pullRequest')
 all_files_changed=$(echo "${pr_data}" | jq '.data.repository.pullRequests.nodes')
 rate_limit_remaining=$(echo "${pr_data}" | jq '.data.rateLimit.remaining')
 
-echo "[ DEBUG ] Remaining API calls: ${rate_limit_remaining}"
-echo "[ DEBUG ] ${pr_files_changed}"
+echo "[DEBUG] Remaining API calls: ${rate_limit_remaining}"
+echo "[DEBUG] ${pr_files_changed}"
 
 # This JavaScript code will check if the files changed on the current PR has
 # also been changed on another open PR. If it does, it logs an array of entries.
@@ -106,8 +106,8 @@ fi
 # By default this condition is false and it won't run, unless
 # one or more pull request has been found.
 if [[ "${FOUND_PR_AMOUNT}" -gt 0 ]]; then
-    echo "[ DEBUG ] FOUND_PR_AMOUNT: ${FOUND_PR_AMOUNT}"
-    echo "[ DEBUG ] FOUND_PR_NUMBERS: ${FOUND_PR_NUMBERS}"
+    echo "[DEBUG] FOUND_PR_AMOUNT: ${FOUND_PR_AMOUNT}"
+    echo "[DEBUG] FOUND_PR_NUMBERS: ${FOUND_PR_NUMBERS}"
 
     # Exports external variables to be used with other scripts
     # FOUND_PR_NUMBERS is exported as a string to be converted elsewhere.
