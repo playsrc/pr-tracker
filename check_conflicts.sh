@@ -35,23 +35,21 @@ else
         git config user.name "PR Tracker"
 
         # Dry run of git merge
-        git merge "$PR_BRANCH_NAME" --no-commit --no-ff "$COMPARE_BRANCH_NAME"
+        MERGE_DRY_RUN=$(git merge "$PR_BRANCH_NAME" --no-commit --no-ff "$COMPARE_BRANCH_NAME" || true)
 
-        # When a conflict is detected, git returns an error status, if this
-        # happens then increment the conflicts amount variable and reset git.
-        if [ $? -eq 0 ]; then
-            echo "---"
-            echo "No conflicts found!"
-            echo "---"
-            git merge --abort
-            git reset
+        # When a conflict is detected, git enters a halt state and displays an
+        # message, using grep we can confirm that it was really a failure.
+        if echo "${MERGE_DRY_RUN}" | grep -q "did not work\|failed"; then
+            echo "[DEBUG] Conflict found!"
+            # Cleanup of the merge operation
+            git merge --abort || true
+            git reset --merge
         else
-            echo "---"
-            echo "Error!"
-            echo "---"
+            echo "[DEBUG] No conflicts found!"
             ((CONFLICT_PR_AMOUNT++))
-            git merge --abort
-            git reset
+            # Cleanup of the merge operation
+            git merge --abort || true
+            git reset --merge
         fi
     done
 fi
