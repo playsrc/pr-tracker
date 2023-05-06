@@ -22,6 +22,9 @@ fi
 # a conflict has been detected, and incremented the variable count
 if [[ "${CONFLICT_PR_AMOUNT}" -gt 0 ]]; then
     echo "--- DEBUG START ---"
+    
+    # TESTING IF GIT DETECTS A CONFLICT
+    # I MODIFIED TWO LINES!
 
     echo "FOUND_PR_AMOUNT: ${FOUND_PR_AMOUNT}"
     echo "FOUND_PR_NUMBERS: ${FOUND_PR_NUMBERS}"
