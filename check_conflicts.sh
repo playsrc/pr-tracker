@@ -7,6 +7,8 @@ echo "Checking Conflicts..."
 # if FOUND_PR_NUMBERS is empty, do nothing, else start checking for conflicts
 if [[ -z "${FOUND_PR_NUMBERS}" ]]
 then
+    # TESTING IF GIT DETECTS A CONFLICT
+    # I MODIFIED TWO LINES!
     echo "No conflicts found!"
 else
     # Bash doesn't exports arrays, so we have to convert it from string
