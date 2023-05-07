@@ -30,8 +30,10 @@ fi
 
 if [ -z "${CHECK_HUNKS_LINE}" ]
 then
-    COMPOSED_COMMENT+="| :white_check_mark: | **0** similar hunk(s) spotted |\n"
+    COMPOSED_COMMENT+="| :white_check_mark: | **0** duplicated hunk(s) spotted |\n"
 else
+    COMPOSED_DETAIL+="\n\n#### Check Hunks\n\n"
+
     COMPOSED_COMMENT+="${CHECK_HUNKS_LINE}\n"
     COMPOSED_DETAIL+="${CHECK_HUNKS_DETAILS}\n"
 fi
