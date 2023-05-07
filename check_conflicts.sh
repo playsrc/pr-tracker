@@ -70,8 +70,7 @@ fi
 # By default this condition is false and it won't run, unless
 # a conflict has been detected, and incremented the variable count
 if [[ "${CONFLICT_PR_AMOUNT}" -gt 0 ]]; then
-    echo "[DEBUG] FOUND_PR_AMOUNT: ${FOUND_PR_AMOUNT}"
-    echo "[DEBUG] FOUND_PR_NUMBERS: ${FOUND_PR_NUMBERS}"
+    echo "[DEBUG] CONFLICT_PR_AMOUNT: ${CONFLICT_PR_AMOUNT}"
 
     # Exports comment parts to be assembled in comment.sh
     export CHECK_CONFLICTS_LINE="| :heavy_multiplication_x: | **${CONFLICT_PR_AMOUNT}** conflict(s) detected among them |"
