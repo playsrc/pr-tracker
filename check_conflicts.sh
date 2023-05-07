@@ -49,12 +49,13 @@ else
         # message, using grep we can confirm that it was really a failure.
         if echo "${MERGE_DRY_RUN}" | grep -q "did not work\|failed"; then
             echo "[DEBUG] Conflict found!"
+            # Increment the amount of conflicts
+            ((CONFLICT_PR_AMOUNT++))
             # Cleanup of the merge operation
             git merge --abort || true
             git reset --merge
         else
             echo "[DEBUG] No conflicts found!"
-            ((CONFLICT_PR_AMOUNT++))
             # Cleanup of the merge operation
             git merge --abort || true
             git reset --merge
