@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# FIX ME:
+# When looping through the hunks, false positives are going to be matched,
+# the code doesn't look for files, so a hunk might be the exact same
+# but in a different file.
+
 echo "Checking Hunks..."
 
 # Variables initialization
