@@ -1,7 +1,9 @@
 #!/bin/bash
-CONFLICT_PR_AMOUNT=0
 
 echo "Checking Conflicts..."
+
+# Variables initialization
+CONFLICT_PR_AMOUNT=0
 
 # check_pulls.sh exports two variables FOUND_PR_NUMBERS and FOUND_PR_AMOUNT
 # if FOUND_PR_NUMBERS is empty, do nothing, else start checking for conflicts
@@ -11,6 +13,12 @@ then
 else
     # Bash doesn't exports arrays, so we have to convert it from string
     readarray -t pr_array <<<"$FOUND_PR_NUMBERS"
+
+    # Cloning the repository to allow for branch comparisons
+    echo "[DEBUG] PWD: $(pwd)"
+    gh repo clone "${OWNER}/${REPOSITORY}"
+    cd "${REPOSITORY}" || exit
+    echo "[DEBUG] REPOSITORY PWD: $(pwd)"
 
     # Checkout the current PR and get its branch name
     gh pr checkout "${PR_NUMBER}"
@@ -52,6 +60,10 @@ else
             git reset --merge
         fi
     done
+
+    # Go back to the root (pr-tracker) files
+    cd ..
+    echo "[DEBUG] PWD: $(pwd)"
 fi
 
 # By default this condition is false and it won't run, unless

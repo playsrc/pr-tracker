@@ -26,10 +26,10 @@ runs:
       with:
         repository: 'mateusabelli/pr-tracker'
         ref: 'main'
-    - run: ". check_pulls.sh /
-      && . check_conflicts.sh /
-      && . comment.sh"
-      
+    - run: '. check_pulls.sh /
+            && . check_conflicts.sh /
+            && . comment.sh'
+
       shell: bash
       env:
         OWNER: ${{ inputs.owner }}
