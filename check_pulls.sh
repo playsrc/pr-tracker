@@ -53,7 +53,7 @@ echo "[DEBUG] ${pr_files_changed}"
 
 # This JavaScript code will check if the files changed on the current PR has
 # also been changed on another open PR. If it does, it logs an array of entries.
-JS_CODE="
+FOUND_PR_DATA=$(node -e "
 // This variable receives the array of files changed on the PR
 // and it maps through it to return a clean formatted output like this:
 // ['file1.txt', 'dir/file2.txt', 'file3.txt']
@@ -79,19 +79,23 @@ ${all_files_changed}?.forEach((pr) => {
     }
 });
 
-// That .join('\n') at the end will convert
-// an array like this [5, 6] to the following:
-// 5
-// 6
-const result = matchedData?.map(data => data.number).join('\n');
-
 // Logs the data to be exported, only if there are values in it.
-if (result?.length > 0) {
-    console.log(result);
+if (matchedData?.length > 0) {
+    console.log(JSON.stringify(matchedData));
 }
-"
-# Assigns the returned result of the JavaScript code, or an empty string
-FOUND_PR_NUMBERS="$(node -e "${JS_CODE}")"
+")
+
+# Assigns the returned result of the JavaScript code, piping with
+# jq to extract only the numbers from the JSON returned.
+FOUND_PR_NUMBERS="$(echo "${FOUND_PR_DATA}" | jq '.[].number')"
+
+# The raw array of files changed, it might contain duplicated entries
+readarray -t FOUND_PR_FILES_RAW <<<"$(echo "${FOUND_PR_DATA}" | jq '.[].files[]')"
+
+# This is the final 'stringifyed' version, it must be that way or else it would not
+# be possible to export it from the above array, it filters duplicates
+# and removes the double quotes.
+FOUND_PR_FILES="$(echo "${FOUND_PR_FILES_RAW[@]}" | tr -d '"' | tr ' ' '\n' | sort -u | tr '\n' ' ')"
 
 # If the variable is empty, then set the found amount to zero, else set the amount
 # to the length of the array of entries.
@@ -107,14 +111,17 @@ fi
 # one or more pull request has been found.
 if [[ "${FOUND_PR_AMOUNT}" -gt 0 ]]; then
     echo "[DEBUG] FOUND_PR_AMOUNT: ${FOUND_PR_AMOUNT}"
-    echo "[DEBUG] FOUND_PR_NUMBERS: ${FOUND_PR_NUMBERS}"
+    echo "[DEBUG] FOUND_PR_FILES: ${FOUND_PR_FILES}"
+    echo -e "[DEBUG] FOUND_PR_NUMBERS: \n${FOUND_PR_NUMBERS}"
 
     # Exports external variables to be used with other scripts
-    # FOUND_PR_NUMBERS is exported as a string to be converted elsewhere.
     export FOUND_PR_AMOUNT=${FOUND_PR_AMOUNT}
     export FOUND_PR_NUMBERS=${FOUND_PR_NUMBERS}
+    export FOUND_PR_FILES=${FOUND_PR_FILES}
 
     # Exports comment parts to be assembled in comment.sh
     export CHECK_PULLS_LINE="| :ballot_box_with_check: | **${FOUND_PR_AMOUNT}** pull request(s) found with the same file(s) |"
     export CHECK_PULLS_DETAILS=":ballot_box_with_check: Found other Pull Request(s) with the same file(s) being modified (TODO)"
+else
+    echo "[DEBUG]: No PRs found with the same files"
 fi
