@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# TODO (FIX ME):
+# A file can have multiple hunks, the current checking system assumes theres
+# only one hunk like this: .github/workflows/test.yml  -1,4 +1,5
+# this is going to crash when multiple hunks are present.
+# I'm disabling this feature for now, to give more attention and finish the other two.
+
 echo "Checking Hunks..."
 
 # Variables initialization

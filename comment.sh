@@ -28,15 +28,16 @@ else
     COMPOSED_DETAIL+="${CHECK_CONFLICTS_DETAILS}\n"
 fi
 
-if [ -z "${CHECK_HUNKS_LINE}" ]
-then
-    COMPOSED_COMMENT+="| :white_check_mark: | **0** duplicated hunk(s) spotted |\n"
-else
-    COMPOSED_DETAIL+="\n\n#### Check Hunks\n\n"
+# NOTE: Feature temporarily disabled, see check_hunks.sh
+# if [ -z "${CHECK_HUNKS_LINE}" ]
+# then
+#     COMPOSED_COMMENT+="| :white_check_mark: | **(TODO)** duplicated hunk(s) spotted |\n"
+# else
+#     COMPOSED_DETAIL+="\n\n#### Check Hunks\n\n"
 
-    COMPOSED_COMMENT+="${CHECK_HUNKS_LINE}\n"
-    COMPOSED_DETAIL+="${CHECK_HUNKS_DETAILS}\n"
-fi
+#     COMPOSED_COMMENT+="${CHECK_HUNKS_LINE}\n"
+#     COMPOSED_DETAIL+="${CHECK_HUNKS_DETAILS}\n"
+# fi
 
 COMPOSED_DETAIL+="\n\n> **Note** Last update at $(node -e "console.log(new Date().toUTCString())")<br>Learn more about [PR Tracker ↗︎](https://github.com/mateusabelli/pr-tracker)\n"
 
