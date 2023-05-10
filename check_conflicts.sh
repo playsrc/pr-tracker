@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Modification
+
 echo "Checking Conflicts..."
 
 # Variables initialization
