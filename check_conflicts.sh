@@ -76,3 +76,5 @@ if [[ "${CONFLICT_PR_AMOUNT}" -gt 0 ]]; then
     export CHECK_CONFLICTS_LINE="| :heavy_multiplication_x: | **${CONFLICT_PR_AMOUNT}** conflict(s) detected among them |"
     export CHECK_CONFLICTS_DETAILS=":heavy_multiplication_x: Detected merge conflicts with other Pull Request(s) (TODO)"
 fi
+
+# Add Modification
