@@ -26,6 +26,9 @@ else
 
     echo "[DEBUG] PR_BRANCH_NAME: ${PR_BRANCH_NAME}"
 
+
+    # Modification
+
     # Loop through the array of PR numbers to check if they conflict with the
     # current pr by having git attempt an auto merge between the two branches.
     for pr in "${pr_array[@]}"
@@ -76,5 +79,3 @@ if [[ "${CONFLICT_PR_AMOUNT}" -gt 0 ]]; then
     export CHECK_CONFLICTS_LINE="| :heavy_multiplication_x: | **${CONFLICT_PR_AMOUNT}** conflict(s) detected among them |"
     export CHECK_CONFLICTS_DETAILS=":heavy_multiplication_x: Detected merge conflicts with other Pull Request(s) (TODO)"
 fi
-
-# Add Modification
