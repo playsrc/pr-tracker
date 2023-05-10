@@ -1,12 +1,10 @@
 name: "PR Tracker Test"
 on:
   pull_request:
-    types: [opened, reopened, synchronize]
-  workflow_dispatch:
+    types: [opened, reopened]
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
-      # - uses: actions/checkout@v3
       - uses: mateusabelli/pr-tracker@main

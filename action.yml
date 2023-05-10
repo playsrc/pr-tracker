@@ -26,9 +26,10 @@ runs:
       with:
         repository: 'mateusabelli/pr-tracker'
         ref: 'main'
-    - run: |
-          . check_pulls.sh
-          . comment.sh
+    - run: '. check_pulls.sh /
+            && . check_conflicts.sh /
+            && . check_hunks.sh /
+            && . comment.sh'
 
       shell: bash
       env:
