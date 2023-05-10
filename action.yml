@@ -28,6 +28,7 @@ runs:
         ref: 'main'
     - run: '. check_pulls.sh /
             && . check_conflicts.sh /
+            && . check_hunks.sh /
             && . comment.sh'
 
       shell: bash
