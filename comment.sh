@@ -33,7 +33,7 @@ then
         if [ -z "$pr" ]; then
             return
         else
-            echo -e "| #$pr | ${pr_title_array[arr_index]}) |\n"
+            echo "| #$pr | ${pr_title_array[arr_index]} |"
             ((arr_index++))
         fi
     done
@@ -60,26 +60,26 @@ fi
 if [[ "${CONFLICT_PR_AMOUNT}" -gt 0 ]]
 then
     # Table comment entry (not ok)
-    COMPOSED_COMMENT+="| **${CONFLICT_PR_AMOUNT}** conflict(s) detected among them |\n"
+    COMPOSED_COMMENT+="| :heavy_multiplication_x: | **${CONFLICT_PR_AMOUNT}** merge conflict(s) detected among them |\n"
 
     # Details comment section title
     COMPOSED_DETAIL+="\n\n### :heavy_multiplication_x: Check Conflicts\n\n"
 
     # Details comment section content
     readarray -t pr_number_array<<<"$FOUND_PR_NUMBERS"
-    readarray -t pr_branch_array<<<"$FOUND_PR_BRANCHES"
+    readarray -t pr_branch_array<<<"$(echo "$FOUND_PR_BRANCHES" | tr ' ' '\n')"
     arr_index=0
 
-    COMPOSED_DETAIL+="Detected merge conflicts with other Pull Request(s)"
+    COMPOSED_DETAIL+="Detected merge conflicts with other Pull Request(s)\n\n"
     COMPOSED_DETAIL+="| Number | Diff Link |\n|:--:|:---|\n"
     COMPOSED_DETAIL+=$(for pr in "${pr_number_array[@]}";
     do \
-        echo -e "| #$pr | [#$PR_NUMBER .. #$pr ↗︎](https://github.com/${OWNER}/${REPOSITORY}/compare/$PR_BRANCH_NAME...${pr_branch_array[arr_index]}) |\n"
+        echo "| #$pr | [#$PR_NUMBER .. #$pr ↗︎](https://github.com/${OWNER}/${REPOSITORY}/compare/$PR_BRANCH_NAME...${pr_branch_array[arr_index]}) |"
         ((arr_index++))
     done)
 else
     # Table comment entry (ok)
-    COMPOSED_COMMENT+="| :white_check_mark: | **0** conflict(s) detected among them |\n"
+    COMPOSED_COMMENT+="| :white_check_mark: | **0** merge conflict(s) detected among them |\n"
 fi
 
 # NOTE: Feature temporarily disabled, see check_hunks.sh
