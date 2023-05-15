@@ -110,18 +110,52 @@ fi
 # By default this condition is false and it won't run, unless
 # one or more pull request has been found.
 if [[ "${FOUND_PR_AMOUNT}" -gt 0 ]]; then
+
+    # The following code will run to get the branches names that are
+    # used for visual comparison in the details of the comment.
+    FOUND_PR_BRANCHES_RAW=()
+    FOUND_PR_TITLES_RAW=()
+
+    # Convert the string to back to an array
+    readarray -t pr_numbers_array <<<"$FOUND_PR_NUMBERS"
+
+    # Cloning the repository
+    echo "[DEBUG] PWD: $(pwd)"
+    gh repo clone "${OWNER}/${REPOSITORY}" || true
+    cd "${REPOSITORY}" || exit
+    echo "[DEBUG] REPOSITORY PWD: $(pwd)"
+
+    # Loop through the array of PR numbers to get their branch names
+    for pr_number in "${pr_numbers_array[@]}"
+    do
+        gh pr checkout "$pr_number"
+        FOUND_PR_BRANCHES_RAW+=("$(gh pr view "$pr_number" --json headRefName -q '.headRefName')")
+        FOUND_PR_TITLES_RAW+=("$(gh pr view "$pr_number" --json title -q '.title')")
+    done
+
+    # This is the final 'stringifyed' version, it filters duplicates
+    # and removes the double quotes, if available.
+    FOUND_PR_BRANCHES="$(echo "${FOUND_PR_BRANCHES_RAW[@]}" | tr -d '"' | tr ' ' '\n' | sort -u | tr '\n' ' ')"
+    FOUND_PR_TITLES="$(echo "${FOUND_PR_TITLES_RAW[@]}" | tr -d '"' | tr ' ' '\n' | sort -u | tr '\n' ' ')"
+
+    # Go back to the root (pr-tracker) files
+    cd ..
+
+    # Debug logs
+    echo "[DEBUG] PWD: $(pwd)"
     echo "[DEBUG] FOUND_PR_AMOUNT: ${FOUND_PR_AMOUNT}"
     echo "[DEBUG] FOUND_PR_FILES: ${FOUND_PR_FILES}"
+    echo "[DEBUG] FOUND_PR_TITLES: ${FOUND_PR_TITLES}"
+    echo "[DEBUG] FOUND_PR_BRANCHES: ${FOUND_PR_BRANCHES}"
     echo -e "[DEBUG] FOUND_PR_NUMBERS: \n${FOUND_PR_NUMBERS}"
 
     # Exports external variables to be used with other scripts
+    export FOUND_PR_FILES=${FOUND_PR_FILES}
     export FOUND_PR_AMOUNT=${FOUND_PR_AMOUNT}
     export FOUND_PR_NUMBERS=${FOUND_PR_NUMBERS}
-    export FOUND_PR_FILES=${FOUND_PR_FILES}
+    export FOUND_PR_TITLES=${FOUND_PR_TITLES}
+    export FOUND_PR_BRANCHES=${FOUND_PR_BRANCHES}
 
-    # Exports comment parts to be assembled in comment.sh
-    export CHECK_PULLS_LINE="| :ballot_box_with_check: | **${FOUND_PR_AMOUNT}** pull request(s) found with the same file(s) |"
-    export CHECK_PULLS_DETAILS=":ballot_box_with_check: Found other Pull Request(s) with the same file(s) being modified (TODO)"
 else
     echo "[DEBUG]: No PRs found with the same files"
 fi
