@@ -136,7 +136,11 @@ if [[ "${FOUND_PR_AMOUNT}" -gt 0 ]]; then
     # This is the final 'stringifyed' version, it filters duplicates
     # and removes the double quotes, if available.
     FOUND_PR_BRANCHES="$(echo "${FOUND_PR_BRANCHES_RAW[@]}" | tr -d '"' | tr ' ' '\n' | sort -u | tr '\n' ' ')"
-    FOUND_PR_TITLES="$(echo "${FOUND_PR_TITLES_RAW[@]}" | tr -d '"' | tr ' ' '\n' | sort -u | tr '\n' ' ')"
+    FOUND_PR_TITLES=$(node -e "
+        const arr = \"${FOUND_PR_TITLES_RAW[*]}\"
+        const array = arr.split(\"'\").filter(el => el.length > 0 && el !== ' ')
+        console.log(array.join('\n'))
+    ")
 
     # Go back to the root (pr-tracker) files
     cd ..

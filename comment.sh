@@ -22,7 +22,7 @@ then
     # Details comment section content
     readarray -t pr_number_array<<<"$FOUND_PR_NUMBERS"
     readarray -t pr_file_array<<<"$(echo "$FOUND_PR_FILES" | tr ' ' '\n')"
-    readarray -t pr_title_array<<<"$(echo "$FOUND_PR_TITLES" | tr ' ' '\n')"
+    readarray -t pr_title_array<<<"$FOUND_PR_TITLES"
     arr_index=0
 
     COMPOSED_DETAIL+="Found other Pull Request(s) with the same file(s) being modified\n\n"
