@@ -35,4 +35,5 @@ runs:
         OWNER: ${{ inputs.owner }}
         REPOSITORY: ${{ inputs.repository }}
         PR_NUMBER: ${{ inputs.pr_number }}
+        PR_BRANCH_NAME: ${{ github.event.pull_request.head.ref }}
         GH_TOKEN: ${{ inputs.token }}
