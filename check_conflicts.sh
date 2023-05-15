@@ -16,7 +16,7 @@ else
 
     # Cloning the repository to allow for branch comparisons
     echo "[DEBUG] PWD: $(pwd)"
-    gh repo clone "${OWNER}/${REPOSITORY}"
+    gh repo clone "${OWNER}/${REPOSITORY}" || true
     cd "${REPOSITORY}" || exit
     echo "[DEBUG] REPOSITORY PWD: $(pwd)"
 
@@ -70,9 +70,10 @@ fi
 # By default this condition is false and it won't run, unless
 # a conflict has been detected, and incremented the variable count
 if [[ "${CONFLICT_PR_AMOUNT}" -gt 0 ]]; then
+
+    # Debug logs
     echo "[DEBUG] CONFLICT_PR_AMOUNT: ${CONFLICT_PR_AMOUNT}"
 
-    # Exports comment parts to be assembled in comment.sh
-    export CHECK_CONFLICTS_LINE="| :heavy_multiplication_x: | **${CONFLICT_PR_AMOUNT}** conflict(s) detected among them |"
-    export CHECK_CONFLICTS_DETAILS=":heavy_multiplication_x: Detected merge conflicts with other Pull Request(s) (TODO)"
+    # Exports external variables to be used with other scripts
+    export CONFLICT_PR_AMOUNT="${CONFLICT_PR_AMOUNT}"
 fi
