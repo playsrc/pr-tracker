@@ -130,7 +130,7 @@ if [[ "${FOUND_PR_AMOUNT}" -gt 0 ]]; then
     do
         gh pr checkout "$pr_number"
         FOUND_PR_BRANCHES_RAW+=("$(gh pr view "$pr_number" --json headRefName -q '.headRefName')")
-        FOUND_PR_TITLES_RAW+=("$(gh pr view "$pr_number" --json title -q '.title')")
+        FOUND_PR_TITLES_RAW+=(\'"$(gh pr view "$pr_number" --json title -q '.title')"\')
     done
 
     # This is the final 'stringifyed' version, it filters duplicates
