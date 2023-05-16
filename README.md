@@ -98,10 +98,10 @@ Additional inputs are also available, for normal usage you won't need to modify 
 ```yaml
 - uses: mateusabelli/pr-tracker@v0.0.1-alpha
   with:
-	owner:
-	repository:
-	pr_number:
-	token:
+    owner:
+    repository:
+    pr_number:
+    token:
 ```
 
 | Input | Description | Default |
@@ -167,7 +167,17 @@ flowchart LR
 <details>
 <summary>Click to expand</summary>
 
-<img width="400" src=".github/demo-dark-2.png" />
+<picture >
+	<source
+		srcset=".github/demo-dark-2.png"
+		media="(prefers-color-scheme: dark)"
+	/>
+	<source
+		srcset=".github/demo-light-2.png"
+		media="(prefers-color-scheme: light), (prefers-color-scheme: no-preference)"
+	/>
+	<img width="400" src=".github/demo-light-2.png" />
+</picture>
 
 </details>
 
