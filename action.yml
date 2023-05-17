@@ -1,5 +1,9 @@
-name: 'PR Tracker'
-description: 'Find similar or duplicated Pull Requests'
+name: 'Pull Request Tracker'
+description: 'A GitHub Action to track similar or duplicated Pull Requests.'
+author: 'Mateus Abelli'
+branding:
+  icon: 'git-pull-request'
+  color: 'blue'
 
 inputs:
   owner:
