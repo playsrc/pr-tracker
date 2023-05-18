@@ -26,6 +26,9 @@ else
 
     echo "[DEBUG] PR_BRANCH_NAME: ${PR_BRANCH_NAME}"
 
+
+    # Modification
+
     # Loop through the array of PR numbers to check if they conflict with the
     # current pr by having git attempt an auto merge between the two branches.
     for pr in "${pr_array[@]}"
